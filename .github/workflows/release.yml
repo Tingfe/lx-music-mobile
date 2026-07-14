@@ -27,15 +27,22 @@ jobs:
           keyPassword=android
           EOF
 
-      - name: Build standalone test APK
+      - name: Build standalone mobile and car APKs
         shell: bash
         run: |
           cd android
-          ./gradlew assembleRelease
+          ./gradlew assembleMobileRelease assembleCarRelease
 
-      - name: Upload standalone test APK
+      - name: Upload standalone mobile APK
         uses: actions/upload-artifact@v4
         with:
           name: lx-music-mobile-test-${{ github.sha }}
-          path: android/app/build/outputs/apk/release/*.apk
+          path: android/app/build/outputs/apk/mobile/release/*.apk
+          if-no-files-found: error
+
+      - name: Upload standalone car APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: lx-music-car-test-${{ github.sha }}
+          path: android/app/build/outputs/apk/car/release/*.apk
           if-no-files-found: error

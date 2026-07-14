@@ -117,6 +117,18 @@ android {
         versionName verName
     }
 
+    flavorDimensions "device"
+    productFlavors {
+        mobile {
+            dimension "device"
+        }
+        car {
+            dimension "device"
+            applicationIdSuffix ".car"
+            versionNameSuffix "-car"
+        }
+    }
+
     splits {
         abi {
             reset()
