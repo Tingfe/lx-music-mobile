@@ -25,6 +25,12 @@ declare namespace LX {
     }>
     type ServerSyncHandlerUserApiActions<Socket> = WarpSyncHandlerActions<Socket, ServerSyncUserApiActions>
 
+    type SettingsSyncData = Record<string, string | number | boolean | null>
+    type ServerSyncSettingsActions = WarpPromiseRecord<{
+      onSettingsSyncData: (data: SettingsSyncData) => void
+    }>
+    type ServerSyncHandlerSettingsActions<Socket> = WarpSyncHandlerActions<Socket, ServerSyncSettingsActions>
+
     type ClientSyncActions = WarpPromiseRecord<{
       getEnabledFeatures: (serverType: ServerType, supportedFeatures: SupportedFeatures) => EnabledFeatures
       finished: () => void
@@ -59,5 +65,14 @@ declare namespace LX {
       user_api_sync_finished: () => void
     }>
     type ClientSyncHandlerUserApiActions<Socket> = WarpSyncHandlerActions<Socket, ClientSyncUserApiActions>
+
+    interface SettingsConfig { skipSnapshot: boolean }
+    type ClientSyncSettingsActions = WarpPromiseRecord<{
+      onSettingsSyncData: (data: SettingsSyncData) => void
+      settings_sync_get_data: () => SettingsSyncData
+      settings_sync_set_data: (data: SettingsSyncData) => void
+      settings_sync_finished: () => void
+    }>
+    type ClientSyncHandlerSettingsActions<Socket> = WarpSyncHandlerActions<Socket, ClientSyncSettingsActions>
   }
 }

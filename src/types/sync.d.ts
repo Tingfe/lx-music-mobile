@@ -22,6 +22,7 @@ declare global {
           list: boolean
           dislike: boolean
           userApi: boolean
+          settings: boolean
         }
 
         onClose: (handler: (err: Error) => (void | Promise<void>)) => () => void
@@ -30,6 +31,7 @@ declare global {
         remoteQueueList: LX.Sync.ServerSyncListActions
         remoteQueueDislike: LX.Sync.ServerSyncDislikeActions
         remoteQueueUserApi: LX.Sync.ServerSyncUserApiActions
+        remoteQueueSettings: LX.Sync.ServerSyncSettingsActions
       }
 
 
@@ -58,6 +60,7 @@ declare global {
         list?: false | ListConfig
         dislike?: false | DislikeConfig
         userApi?: false | UserApiConfig
+        settings?: false | SettingsConfig
       }
       type SupportedFeatures = Partial<{ [k in keyof EnabledFeatures]: number }>
     }
