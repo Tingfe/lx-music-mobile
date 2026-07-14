@@ -43,7 +43,13 @@
 
 从 v1.0.0 起，我们发布了一个独立的[数据同步服务](https://github.com/lyswhut/lx-music-sync-server#readme)。如果你有服务器，可以将其部署到服务器上作为私人多端同步服务使用，详情看该项目说明。
 
-本 Fork 增加了自定义音源同步及 Debug APK 构建流程，升级步骤见[自定义音源同步升级说明](docs/CUSTOM_SOURCE_SYNC_UPGRADE.md)。
+### 本 Fork 的定制功能
+
+- 新增自定义音源同步：同一同步账号的设备可同步「设置 → 自定义源」中导入的完整 JS 音源脚本及其元信息；原有歌单与不喜欢列表同步不受影响。
+- `master` 推送会自动构建可独立安装的测试 APK。该 APK 内置 JavaScript bundle，不依赖电脑上的 Metro 开发服务器，也不需要配置正式签名密钥。
+- 自定义音源属于可执行 JavaScript，请仅在自己控制的同步服务和可信账号之间同步。
+
+安装、升级和验证步骤见[自定义音源同步升级说明](docs/CUSTOM_SOURCE_SYNC_UPGRADE.md)。
 
 ## 贡献代码
 
