@@ -46,7 +46,7 @@
 ### 本 Fork 的定制功能
 
 - 新增自定义音源同步：同一同步账号的设备可同步「设置 → 自定义源」中导入的完整 JS 音源脚本及其元信息；原有歌单与不喜欢列表同步不受影响。
-- `master` 推送会自动构建可独立安装的测试 APK。该 APK 内置 JavaScript bundle，不依赖电脑上的 Metro 开发服务器，也不需要配置正式签名密钥。
+- `master` 推送会自动构建可独立安装的测试 APK，并以 GitHub **预发布版本（Pre-release）**展示在 Releases 页面。该 APK 内置 JavaScript bundle，不依赖电脑上的 Metro 开发服务器，也不需要配置正式签名密钥。
 - 新增车机第一阶段构建：提供独立包名的横屏车机 APK（`cn.toside.music.mobile.car`），适用于已验证可安装第三方 APK 的车机；构建说明见[车机版第一阶段说明](docs/CAR_EDITION_PHASE_1.md)。
 - 自定义音源属于可执行 JavaScript，请仅在自己控制的同步服务和可信账号之间同步。
 

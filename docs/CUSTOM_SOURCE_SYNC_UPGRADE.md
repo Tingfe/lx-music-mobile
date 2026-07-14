@@ -21,9 +21,11 @@
 
 ## 获取和安装测试 APK
 
-1. 打开本仓库的 **Actions** 页面，选择成功的 `Build Test APK` 任务。
-2. 在任务底部的 **Artifacts** 下载 `lx-music-mobile-test-<commit>`。
-3. 解压并安装名称中含 `universal.apk` 的文件；它适用于大多数 Android 设备。车机请选择 `lx-music-car-test-<commit>` 工件中的通用 APK。
+1. 打开本仓库的 **Releases** 页面，选择最新的 `Pre-release` 测试版本。
+2. 下载名称中含 `mobile` 的 APK；车机请选择名称中含 `car` 的 APK。
+3. 优先安装名称中含 `universal.apk` 的文件；它适用于大多数 Android 设备。
+
+同一文件也会保留在对应 `Build Test APK` Actions 任务的 Artifacts 中。
 
 测试 APK 使用调试签名，但已内置 JavaScript bundle，因此无需连接 Metro 开发服务器。若设备上安装了使用不同签名构建的同包名应用，Android 可能要求先卸载旧应用才能安装。
 

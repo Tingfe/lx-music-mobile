@@ -6,6 +6,9 @@ on:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   android-debug:
     name: Android Test APK
@@ -46,3 +49,19 @@ jobs:
           name: lx-music-car-test-${{ github.sha }}
           path: android/app/build/outputs/apk/car/release/*.apk
           if-no-files-found: error
+
+      - name: Publish test pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          TAG="test-v${VERSION}-${GITHUB_RUN_NUMBER}"
+          gh release create "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --prerelease \
+            --title "LX Music 测试版 v${VERSION} (${GITHUB_RUN_NUMBER})" \
+            --notes "自动构建的测试签名 APK，内置 JavaScript bundle。请勿将其视为正式签名发布版。" \
+            android/app/build/outputs/apk/mobile/release/*.apk \
+            android/app/build/outputs/apk/car/release/*.apk
