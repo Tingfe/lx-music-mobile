@@ -1,4 +1,4 @@
-import { View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 // import Button from '@/components/common/Button'
 // import { navigations } from '@/navigation'
 // import { BorderWidths } from '@/theme'
@@ -12,12 +12,31 @@ import { scaleSizeH } from '@/utils/pixelRatio'
 import { HEADER_HEIGHT as _HEADER_HEIGHT } from '@/config/constant'
 import { type InitState as CommonState } from '@/store/common/state'
 import SearchTypeSelector from '@/screens/Home/Views/Search/SearchTypeSelector'
+import { Icon } from '@/components/common/Icon'
+import { useTheme } from '@/store/theme/hook'
+import { setTheme } from '@/core/theme'
 
 const headerComponents: Partial<Record<CommonState['navActiveId'], React.ReactNode>> = {
   nav_search: <SearchTypeSelector />,
 }
 
 const HEADER_HEIGHT = _HEADER_HEIGHT * 0.8
+
+const ThemeToggle = () => {
+  const theme = useTheme()
+  const lightThemeId = useSettingValue('theme.lightId')
+  const darkThemeId = useSettingValue('theme.darkId')
+
+  return (
+    <TouchableOpacity
+      style={styles.themeToggle}
+      activeOpacity={0.6}
+      onPress={() => { setTheme(theme.isDark ? lightThemeId : darkThemeId) }}>
+      <Icon name="setting" size={18} color={theme['c-font']} />
+      <Text size={13} color={theme['c-font']}>{theme.isDark ? '日间' : '夜间'}</Text>
+    </TouchableOpacity>
+  )
+}
 
 
 // const LeftTitle = () => {
@@ -41,6 +60,7 @@ const LeftHeader = () => {
         <Text style={styles.leftTitle} size={18}>{t(id)}</Text>
       </View>
       {headerComponents[id] ?? null}
+      <ThemeToggle />
 
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
         <Icon style={{ ...styles.btnText, color: theme['c-font'] }} name="setting" size={styles.btnText.fontSize} />
@@ -71,6 +91,7 @@ const RightHeader = () => {
         <Text style={styles.rightTitle} size={18}>{t(id)}</Text>
       </View>
       {headerComponents[id] ?? null}
+      <ThemeToggle />
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
         <Icon style={{ ...styles.btnText, color: theme['c-font'] }} name="setting" size={styles.btnText.fontSize} />
       </TouchableOpacity> */}
@@ -134,6 +155,15 @@ const styles = createStyle({
   rightTitle: {
     paddingLeft: 16,
     paddingRight: 16,
+  },
+  themeToggle: {
+    height: '100%',
+    minWidth: 66,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 5,
   },
 })
 
