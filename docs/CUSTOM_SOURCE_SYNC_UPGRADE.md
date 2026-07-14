@@ -7,7 +7,7 @@
 - 新增 `userApi` 同步功能：同步「设置 → 自定义源」中导入的音源元信息和完整 JavaScript 脚本。
 - 同一同步账号的在线设备在音源添加、删除或修改后会收到实时更新。
 - 接收到更新后，如果该音源正被选为当前自定义源，应用会重新加载其脚本。
-- `master` 分支推送会构建 Debug APK，不需要 Android 签名密钥，也不会创建 GitHub Release。
+- `master` 分支推送会构建可独立运行的测试 APK，不需要 Android 签名密钥，也不会创建 GitHub Release。
 
 歌单和不喜欢列表的既有同步功能未改变。旧服务端不支持 `userApi` feature 时，移动端会继续使用旧功能，但不会同步音源。
 
@@ -19,13 +19,13 @@
 
 首次连接到空服务端时，第一台连接的设备会把本机音源写入服务端。服务端已有音源数据时，服务端版本会覆盖刚连接设备的本地音源，避免旧设备意外覆盖较新的配置。
 
-## 获取和安装 Debug APK
+## 获取和安装测试 APK
 
-1. 打开本仓库的 **Actions** 页面，选择成功的 `Build Debug APK` 任务。
-2. 在任务底部的 **Artifacts** 下载 `lx-music-mobile-debug-<commit>`。
+1. 打开本仓库的 **Actions** 页面，选择成功的 `Build Test APK` 任务。
+2. 在任务底部的 **Artifacts** 下载 `lx-music-mobile-test-<commit>`。
 3. 解压并安装名称中含 `universal.apk` 的文件；它适用于大多数 Android 设备。
 
-Debug APK 使用调试签名。若设备上安装了使用不同签名构建的同包名应用，Android 可能要求先卸载旧应用才能安装。
+测试 APK 使用调试签名，但已内置 JavaScript bundle，因此无需连接 Metro 开发服务器。若设备上安装了使用不同签名构建的同包名应用，Android 可能要求先卸载旧应用才能安装。
 
 ## 验证步骤
 
