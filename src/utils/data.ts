@@ -515,6 +515,26 @@ export const getUserApiScript = async(id: string): Promise<string> => {
   return script
 }
 
+export type UserApiSyncData = Array<{ info: LX.UserApi.UserApiInfo, script: string }>
+
+export const getUserApiSyncData = async(): Promise<UserApiSyncData> => {
+  const list = await getUserApiList()
+  return Promise.all(list.map(async info => ({ info, script: await getUserApiScript(info.id) })))
+}
+
+export const overwriteUserApiSyncData = async(data: UserApiSyncData) => {
+  const nextList = data.map(({ info }) => ({ ...info }))
+  const nextIds = new Set(nextList.map(info => info.id))
+  const removedKeys = userApis.filter(info => !nextIds.has(info.id)).map(info => `${userApiPrefix}${info.id}`)
+  userApis = nextList
+  await saveDataMultiple([
+    [userApiPrefix, userApis],
+    ...data.map(({ info, script }) => [`${userApiPrefix}${info.id}`, script] as [string, string]),
+  ])
+  if (removedKeys.length) await removeDataMultiple(removedKeys)
+  return [...userApis]
+}
+
 const INFO_NAMES = {
   name: 24,
   description: 36,

@@ -17,6 +17,7 @@ const handler: Omit<LX.Sync.ClientSyncHandlerActions<LX.Sync.Socket>, 'finished'
         if (featureVersion.dislike == supportedFeatures.dislike) {
           features.dislike = { skipSnapshot: false }
         }
+        if (featureVersion.userApi == supportedFeatures.userApi) features.userApi = { skipSnapshot: false }
         return features
       case 'desktop-app':
       default:
@@ -26,6 +27,7 @@ const handler: Omit<LX.Sync.ClientSyncHandlerActions<LX.Sync.Socket>, 'finished'
         if (featureVersion.dislike == supportedFeatures.dislike) {
           features.dislike = { skipSnapshot: false }
         }
+        if (featureVersion.userApi == supportedFeatures.userApi) features.userApi = { skipSnapshot: false }
         return features
     }
   },

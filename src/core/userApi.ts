@@ -1,7 +1,8 @@
 import { action, state } from '@/store/userApi'
-import { addUserApi, getUserApiScript, removeUserApi as removeUserApiFromStore, setUserApiAllowShowUpdateAlert as setUserApiAllowShowUpdateAlertFromStore } from '@/utils/data'
+import { addUserApi, getUserApiScript, overwriteUserApiSyncData, removeUserApi as removeUserApiFromStore, setUserApiAllowShowUpdateAlert as setUserApiAllowShowUpdateAlertFromStore, type UserApiSyncData } from '@/utils/data'
 import { destroy, loadScript } from '@/utils/nativeModules/userApi'
 import { log as writeLog } from '@/utils/log'
+import settingState from '@/store/setting/state'
 
 
 export const setUserApi = async(apiId: string) => {
@@ -35,6 +36,13 @@ export const importUserApi = async(script: string) => {
 export const removeUserApi = async(ids: string[]) => {
   const list = await removeUserApiFromStore(ids)
   action.setUserApiList(list)
+}
+
+export const overwriteUserApisFromSync = async(data: UserApiSyncData) => {
+  const list = await overwriteUserApiSyncData(data)
+  action.setUserApiList(list)
+  const activeId = settingState.setting['common.apiSource']
+  if (activeId && list.some(api => api.id == activeId)) await setUserApi(activeId)
 }
 
 export const setUserApiAllowShowUpdateAlert = async(id: string, enable: boolean) => {

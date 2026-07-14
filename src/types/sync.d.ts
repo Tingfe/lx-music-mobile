@@ -21,6 +21,7 @@ declare global {
         moduleReadys: {
           list: boolean
           dislike: boolean
+          userApi: boolean
         }
 
         onClose: (handler: (err: Error) => (void | Promise<void>)) => () => void
@@ -28,6 +29,7 @@ declare global {
         remote: LX.Sync.ServerSyncActions
         remoteQueueList: LX.Sync.ServerSyncListActions
         remoteQueueDislike: LX.Sync.ServerSyncDislikeActions
+        remoteQueueUserApi: LX.Sync.ServerSyncUserApiActions
       }
 
 
@@ -55,6 +57,7 @@ declare global {
       interface EnabledFeatures {
         list?: false | ListConfig
         dislike?: false | DislikeConfig
+        userApi?: false | UserApiConfig
       }
       type SupportedFeatures = Partial<{ [k in keyof EnabledFeatures]: number }>
     }
