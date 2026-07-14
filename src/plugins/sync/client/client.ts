@@ -144,7 +144,7 @@ const heartbeatTools = {
 
 let client: LX.Sync.Socket | null
 // let listSyncPromise: Promise<void>
-export const connect = (urlInfo: LX.Sync.UrlInfo, keyInfo: LX.Sync.KeyInfo) => {
+export const connect = (urlInfo: LX.Sync.UrlInfo, keyInfo: LX.Sync.KeyInfo, onInitialAuthFailed?: () => Promise<void>) => {
   client = new WebSocket(`${urlInfo.wsProtocol}//${urlInfo.hostPath}/socket?i=${encodeURIComponent(keyInfo.clientId)}&t=${encodeURIComponent(aesEncrypt(SYNC_CODE.msgConnect, keyInfo.key))}`) as LX.Sync.Socket
   client.data = {
     keyInfo,
@@ -154,12 +154,14 @@ export const connect = (urlInfo: LX.Sync.UrlInfo, keyInfo: LX.Sync.KeyInfo) => {
 
   let closeEvents: Array<(err: Error) => (void | Promise<void>)> = []
   let disconnected = true
+  let syncFinished = false
 
   const message2read = createMsg2call<LX.Sync.ServerSyncActions>({
     funcsObj: {
       ...callObj,
       finished() {
         toast('Sync connected')
+        syncFinished = true
         client!.isReady = true
         sendSyncStatus({
           status: true,
@@ -260,6 +262,16 @@ export const connect = (urlInfo: LX.Sync.UrlInfo, keyInfo: LX.Sync.KeyInfo) => {
         })
         break
       case SYNC_CLOSE_CODE.failed:
+        if (!syncFinished && onInitialAuthFailed) {
+          void onInitialAuthFailed().catch(err => {
+            log.error('remove expired sync auth key error: ', err)
+          })
+          sendSyncStatus({
+            status: false,
+            message: SYNC_CODE.authFailed,
+          })
+          break
+        }
         if (!status.message || status.message == initMessage) {
           sendSyncStatus({
             status: false,

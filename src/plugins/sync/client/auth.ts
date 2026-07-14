@@ -90,11 +90,11 @@ const keyAuth = async(urlInfo: LX.Sync.UrlInfo, keyInfo: LX.Sync.KeyInfo) => {
 }
 
 const auth = async(urlInfo: LX.Sync.UrlInfo, serverId: string, authCode?: string) => {
-  if (authCode) return codeAuth(urlInfo, serverId, authCode)
+  if (authCode) return { keyInfo: await codeAuth(urlInfo, serverId, authCode), serverId }
   const keyInfo = await getSyncAuthKey(serverId)
   if (!keyInfo) throw new Error(SYNC_CODE.missingAuthCode)
   await keyAuth(urlInfo, keyInfo)
-  return keyInfo
+  return { keyInfo, serverId }
 }
 
 export default async(urlInfo: LX.Sync.UrlInfo, authCode?: string) => {

@@ -1,5 +1,6 @@
 import handleAuth from './auth'
 import { connect as socketConnect, disconnect as socketDisconnect, sendSyncStatus, sendSyncMessage } from './client'
+import { removeSyncAuthKey } from '../data'
 // import { getSyncHost } from '@/utils/data'
 import log from '../log'
 import { parseUrl } from './utils'
@@ -15,9 +16,9 @@ const handleConnect = async(host: string, authCode?: string) => {
   const urlInfo = parseUrl(host)
   await disconnectServer(false)
   if (id != connectId) return
-  const keyInfo = await handleAuth(urlInfo, authCode)
+  const { keyInfo, serverId } = await handleAuth(urlInfo, authCode)
   if (id != connectId) return
-  socketConnect(urlInfo, keyInfo)
+  socketConnect(urlInfo, keyInfo, () => removeSyncAuthKey(serverId))
 }
 const handleDisconnect = async() => {
   await socketDisconnect()

@@ -1,6 +1,7 @@
 export {
   getSyncAuthKey,
   setSyncAuthKey,
+  removeSyncAuthKey,
   getSyncHost,
   setSyncHost,
   getSyncHostHistory,
