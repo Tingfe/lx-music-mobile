@@ -43,6 +43,8 @@
 
 从 v1.0.0 起，我们发布了一个独立的[数据同步服务](https://github.com/lyswhut/lx-music-sync-server#readme)。如果你有服务器，可以将其部署到服务器上作为私人多端同步服务使用，详情看该项目说明。
 
+本 Fork 增加了自定义音源同步及 Debug APK 构建流程，升级步骤见[自定义音源同步升级说明](docs/CUSTOM_SOURCE_SYNC_UPGRADE.md)。
+
 ## 贡献代码
 
 本项目欢迎 PR，但为了 PR 能顺利合并，需要注意以下几点：
