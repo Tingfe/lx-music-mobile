@@ -17,6 +17,16 @@ jobs:
       - name: Setup Env
         uses: ./.github/actions/setup
 
+      - name: Create temporary debug signing config
+        shell: bash
+        run: |
+          cat > android/keystore.properties <<'EOF'
+          storeFile=debug.keystore
+          storePassword=android
+          keyAlias=androiddebugkey
+          keyPassword=android
+          EOF
+
       - name: Build Debug APK
         shell: bash
         run: |
