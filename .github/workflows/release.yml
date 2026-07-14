@@ -1,4 +1,4 @@
-name: Build Debug APK
+name: Build Test APK
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   android-debug:
-    name: Android Debug APK
+    name: Android Test APK
     runs-on: ubuntu-latest
     steps:
       - name: Check out git repository
@@ -17,7 +17,7 @@ jobs:
       - name: Setup Env
         uses: ./.github/actions/setup
 
-      - name: Create temporary debug signing config
+      - name: Create temporary test signing config
         shell: bash
         run: |
           cat > android/keystore.properties <<'EOF'
@@ -27,15 +27,15 @@ jobs:
           keyPassword=android
           EOF
 
-      - name: Build Debug APK
+      - name: Build standalone test APK
         shell: bash
         run: |
           cd android
-          ./gradlew assembleDebug
+          ./gradlew assembleRelease
 
-      - name: Upload Debug APK
+      - name: Upload standalone test APK
         uses: actions/upload-artifact@v4
         with:
-          name: lx-music-mobile-debug-${{ github.sha }}
-          path: android/app/build/outputs/apk/debug/*.apk
+          name: lx-music-mobile-test-${{ github.sha }}
+          path: android/app/build/outputs/apk/release/*.apk
           if-no-files-found: error
