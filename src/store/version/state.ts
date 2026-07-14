@@ -9,6 +9,7 @@ export interface VersionInfo {
   version: string
   desc: string
   history?: LX.VersionInfo[]
+  assets?: Array<{ name: string, browser_download_url: string }>
 }
 
 export interface InitState {

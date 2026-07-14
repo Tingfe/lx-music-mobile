@@ -23,11 +23,12 @@ export const checkUpdate = async() => {
   versionActions.setVersionInfo({ status: 'checking' })
   let versionInfo: InitState['versionInfo'] = { ...versionState.versionInfo }
   try {
-    const { version, desc, history } = await getVersionInfo()
+    const { version, desc, history, assets } = await getVersionInfo()
     versionInfo.newVersion = {
       version,
       desc,
       history,
+      assets,
     }
   } catch (err) {
     versionInfo.newVersion = {
@@ -72,7 +73,7 @@ export const downloadUpdate = () => {
   versionActions.setVersionInfo({ status: 'downloading' })
   versionActions.setProgress({ total: 0, current: 0 })
 
-  downloadNewVersion(versionState.versionInfo.newVersion!.version, (total: number, current: number) => {
+  downloadNewVersion(versionState.versionInfo.newVersion!.assets, (total: number, current: number) => {
     // console.log(total, current)
     versionActions.setProgress({ total, current })
   }).then(() => {

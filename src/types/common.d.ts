@@ -12,5 +12,6 @@ declare namespace LX {
   interface VersionInfo {
     version: string
     desc: string
+    assets?: Array<{ name: string, browser_download_url: string }>
   }
 }

@@ -116,6 +116,11 @@ public class UtilsModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void getPackageName(Promise promise) {
+    promise.resolve(reactContext.getPackageName());
+  }
+
+  @ReactMethod
   public void getSupportedAbis(Promise promise) {
     // https://github.com/react-native-device-info/react-native-device-info/blob/ff8f672cb08fa39a887567d6e23e2f08778e8340/android/src/main/java/com/learnium/RNDeviceInfo/RNDeviceModule.java#L877
     WritableArray array = new WritableNativeArray();
@@ -382,4 +387,3 @@ public class UtilsModule extends ReactContextBaseJavaModule {
     }).start();
   }
 }
-

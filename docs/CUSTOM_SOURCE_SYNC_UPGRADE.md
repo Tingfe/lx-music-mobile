@@ -7,7 +7,8 @@
 - 新增 `userApi` 同步功能：同步「设置 → 自定义源」中导入的音源元信息和完整 JavaScript 脚本。
 - 同一同步账号的在线设备在音源添加、删除或修改后会收到实时更新。
 - 接收到更新后，如果该音源正被选为当前自定义源，应用会重新加载其脚本。
-- `master` 分支推送会构建可独立运行的测试 APK，不需要 Android 签名密钥，也不会创建 GitHub Release。
+- `master` 分支推送会构建可独立运行的测试 APK，不需要 Android 签名密钥，并以 GitHub `Pre-release` 形式发布。
+- 应用内「检查更新」读取 `Tingfe/lx-music-mobile` 的正式 Release，不会跳转或下载原作者仓库的版本；它会按当前安装包自动匹配 `mobile` 或 `car` APK。
 
 歌单和不喜欢列表的既有同步功能未改变。旧服务端不支持 `userApi` feature 时，移动端会继续使用旧功能，但不会同步音源。
 
@@ -26,6 +27,15 @@
 3. 优先安装名称中含 `universal.apk` 的文件；它适用于大多数 Android 设备。
 
 同一文件也会保留在对应 `Build Test APK` Actions 任务的 Artifacts 中。
+
+## 发布正式版本与应用内升级
+
+测试预发布只供手动验证，不会被应用内升级检测到。需要发布可由应用内升级的正式版本时：
+
+1. 将 `package.json` 的 `version` 与 `versionCode` 升级到新版本。
+2. 提交并推送该版本的代码。
+3. 创建并推送同名 Git tag，例如版本为 `1.8.5` 时执行 `git tag v1.8.5`、`git push origin v1.8.5`。
+4. GitHub Actions 会构建手机与车机 APK，并创建正式 Release。应用内检查更新会从该 Release 下载与当前设备类型、CPU 架构匹配的 APK。
 
 测试 APK 使用调试签名，但已内置 JavaScript bundle，因此无需连接 Metro 开发服务器。若设备上安装了使用不同签名构建的同包名应用，Android 可能要求先卸载旧应用才能安装。
 
