@@ -2,7 +2,7 @@ import { httpGet } from '@/utils/request'
 import { downloadFile, stopDownload, temporaryDirectoryPath } from '@/utils/fs'
 import { getPackageName, getSupportedAbis, installApk } from '@/utils/nativeModules/utils'
 import { APP_PROVIDER_NAME } from '@/config/constant'
-import { LATEST_RELEASE_API_URL } from '@/config/release'
+import { LATEST_RELEASE_API_URL, RELEASES_API_URL } from '@/config/release'
 
 const abis = [
   'arm64-v8a',
@@ -26,15 +26,27 @@ const request = async(url, retryNum = 0) => {
   })
 }
 
-export const getVersionInfo = async() => {
-  const release = JSON.parse(await request(LATEST_RELEASE_API_URL))
-  const version = release.tag_name?.replace(/^v/, '')
-  if (!version || !Array.isArray(release.assets)) throw new Error('invalid release')
+export const getVersionInfo = async(includePreRelease = false) => {
+  let release
+  if (includePreRelease) {
+    const releases = JSON.parse(await request(RELEASES_API_URL))
+    release = releases.find(item => !item.draft && item.prerelease)
+    // A preview channel with no available preview should still check stable
+    // releases instead of showing an update-check failure.
+    if (!release) release = JSON.parse(await request(LATEST_RELEASE_API_URL))
+  } else {
+    release = JSON.parse(await request(LATEST_RELEASE_API_URL))
+  }
+  if (!release || !Array.isArray(release.assets)) throw new Error('invalid release')
 
   const isCarEdition = (await getPackageName()).endsWith('.car')
   const assetName = isCarEdition ? /-car-v.*-(?:universal|arm64-v8a|armeabi-v7a|x86_64|x86)\.apk$/ : /-mobile-v.*-(?:universal|arm64-v8a|armeabi-v7a|x86_64|x86)\.apk$/
   const assets = release.assets.filter(asset => assetName.test(asset.name))
   if (!assets.length) throw new Error('no matching APK asset')
+  const version = release.prerelease
+    ? assets[0].name.match(/-v(\d+\.\d+\.\d+)-/)?.[1]
+    : release.tag_name?.replace(/^v/, '')
+  if (!version) throw new Error('invalid release version')
 
   return {
     version,

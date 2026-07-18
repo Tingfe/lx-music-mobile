@@ -9,8 +9,10 @@ import { createStyle, openUrl } from '@/utils/tools'
 import { useTheme } from '@/store/theme/hook'
 import { useI18n } from '@/lang'
 import Text from '@/components/common/Text'
-import { showPactModal } from '@/core/common'
+import { showPactModal, updateSetting } from '@/core/common'
 import { RELEASES_URL, RELEASE_REPOSITORY } from '@/config/release'
+import CheckBoxItem from '../components/CheckBoxItem'
+import { useSettingValue } from '@/store/setting/hook'
 
 // const qqGroupUrl = 'mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3Du1zyxek8roQAwic44nOkBXtG9CfbAxFw'
 // const qqGroupUrl2 = 'mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26jump_from%3Dwebapi%26k%3D-l4kNZ2bPQAuvfCQFFhl1UoibvF5wcrQ'
@@ -20,6 +22,7 @@ import { RELEASES_URL, RELEASE_REPOSITORY } from '@/config/release'
 export default memo(() => {
   const theme = useTheme()
   const t = useI18n()
+  const isEnablePreReleaseUpdate = useSettingValue('common.isEnablePreReleaseUpdate')
   const openHomePage = () => {
     void openUrl(`https://github.com/${RELEASE_REPOSITORY}#readme`)
   }
@@ -74,6 +77,13 @@ export default memo(() => {
         <TouchableOpacity onPress={openGHReleasePage}>
           <Text style={textLinkStyle}>GitHub Releases</Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.checkBox}>
+        <CheckBoxItem
+          check={isEnablePreReleaseUpdate}
+          label="接收测试版更新（可能不稳定）"
+          onChange={(enable) => { updateSetting({ 'common.isEnablePreReleaseUpdate': enable }) }}
+        />
       </View>
       <View style={styles.part}>
         <Text style={styles.text} >软件的常见问题可转至：</Text>
@@ -143,5 +153,10 @@ const styles = createStyle({
   },
   btn: {
     flexDirection: 'row',
+  },
+  checkBox: {
+    marginLeft: 15,
+    marginRight: 15,
+    marginBottom: 10,
   },
 })

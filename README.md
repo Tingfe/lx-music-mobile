@@ -4,7 +4,7 @@
 
 - 下载测试包：[Releases](https://github.com/Tingfe/lx-music-mobile/releases)
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
-- 当前版本：`v1.8.7`
+- 当前版本：`v1.8.8`
 - 支持 Android 5 及以上；发布包仅提供一个 `universal.apk`。
 
 ## 本 Fork 的功能
@@ -14,6 +14,7 @@
 - 同步播放、搜索、歌词与列表偏好；主题、语言、存储路径、缓存、音频硬件和同步凭据始终只保存在当前设备。
 - 当同账号车机在线时，首页顶部显示带绿色圆点的“车机”入口；可查看状态、切歌、播放/暂停，或让车机播放手机当前歌曲。离线车机不会显示，也不会接收离线指令。
 - 应用内更新仅读取本 Fork 的正式 Release；`master` 自动构建的 Pre-release 测试 APK 需要在 Releases 页面手动下载安装。
+- 默认只检查正式版；在「设置 → 关于」开启“接收测试版更新”后，可直接检测和安装最新 Pre-release 的 universal APK。
 
 ## 开始使用
 

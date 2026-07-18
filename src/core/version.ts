@@ -6,6 +6,7 @@ import { getIgnoreVersion, getIgnoreVersionFailTipTime, saveIgnoreVersion, saveI
 import { showVersionModal } from '@/navigation'
 import { Navigation } from 'react-native-navigation'
 import { toast } from '@/utils/tools'
+import settingState from '@/store/setting/state'
 
 export const showModal = () => {
   if (versionState.showModal) return
@@ -23,7 +24,7 @@ export const checkUpdate = async() => {
   versionActions.setVersionInfo({ status: 'checking' })
   let versionInfo: InitState['versionInfo'] = { ...versionState.versionInfo }
   try {
-    const { version, desc, history, assets } = await getVersionInfo()
+    const { version, desc, history, assets } = await getVersionInfo(settingState.setting['common.isEnablePreReleaseUpdate'])
     versionInfo.newVersion = {
       version,
       desc,

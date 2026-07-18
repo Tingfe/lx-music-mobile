@@ -77,6 +77,11 @@ declare global {
       'common.alwaysKeepStatusbarHeight': boolean
 
       /**
+       * 是否接收测试版更新
+       */
+      'common.isEnablePreReleaseUpdate': boolean
+
+      /**
        * 主题id
        */
       'theme.id': string
@@ -358,4 +363,3 @@ declare global {
     }
   }
 }
-
