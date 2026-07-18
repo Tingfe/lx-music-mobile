@@ -15,6 +15,7 @@ import SearchTypeSelector from '@/screens/Home/Views/Search/SearchTypeSelector'
 import { Icon } from '@/components/common/Icon'
 import { useTheme } from '@/store/theme/hook'
 import { setTheme } from '@/core/theme'
+import RemoteControl from '@/screens/Home/Views/Setting/settings/Sync/RemoteControl'
 
 const headerComponents: Partial<Record<CommonState['navActiveId'], React.ReactNode>> = {
   nav_search: <SearchTypeSelector />,
@@ -60,6 +61,7 @@ const LeftHeader = () => {
         <Text style={styles.leftTitle} size={18}>{t(id)}</Text>
       </View>
       {headerComponents[id] ?? null}
+      {id == 'nav_setting' ? null : <RemoteControl compact />}
       <ThemeToggle />
 
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
@@ -91,6 +93,7 @@ const RightHeader = () => {
         <Text style={styles.rightTitle} size={18}>{t(id)}</Text>
       </View>
       {headerComponents[id] ?? null}
+      {id == 'nav_setting' ? null : <RemoteControl compact />}
       <ThemeToggle />
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
         <Icon style={{ ...styles.btnText, color: theme['c-font'] }} name="setting" size={styles.btnText.fontSize} />

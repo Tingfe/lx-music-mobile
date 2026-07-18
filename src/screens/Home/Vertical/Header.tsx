@@ -14,6 +14,7 @@ import { scaleSizeH } from '@/utils/pixelRatio'
 import { HEADER_HEIGHT } from '@/config/constant'
 import { type InitState as CommonState } from '@/store/common/state'
 import SearchTypeSelector from '@/screens/Home/Views/Search/SearchTypeSelector'
+import RemoteControl from '@/screens/Home/Views/Setting/settings/Sync/RemoteControl'
 
 const headerComponents: Partial<Record<CommonState['navActiveId'], React.ReactNode>> = {
   nav_search: <SearchTypeSelector />,
@@ -51,6 +52,7 @@ const LeftHeader = () => {
         </TouchableOpacity>
       </View>
       {headerComponents[id] ?? null}
+      {id == 'nav_setting' ? null : <RemoteControl compact />}
 
       {/* <TouchableOpacity style={styles.btn} onPress={openSetting}>
         <Icon style={{ ...styles.btnText, color: theme['c-font'] }} name="setting" size={styles.btnText.fontSize} />
@@ -87,6 +89,7 @@ const RightHeader = () => {
         </TouchableOpacity>
       </View>
       {headerComponents[id] ?? null}
+      {id == 'nav_setting' ? null : <RemoteControl compact />}
       <TouchableOpacity style={styles.btn} onPress={openMenu}>
         <Icon color={theme['c-font']} name="menu" size={18} />
       </TouchableOpacity>

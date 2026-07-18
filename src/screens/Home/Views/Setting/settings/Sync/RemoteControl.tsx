@@ -1,5 +1,5 @@
-import { memo, useCallback, useRef, useState } from 'react'
-import { ScrollView, View } from 'react-native'
+import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import { ScrollView, TouchableOpacity, View } from 'react-native'
 
 import Popup, { type PopupType } from '@/components/common/Popup'
 import Text from '@/components/common/Text'
@@ -17,7 +17,11 @@ const getMusicText = (status: LX.Sync.RemoteControl.Status) => {
   return `${musicInfo.name} - ${musicInfo.singer}`
 }
 
-export default memo(() => {
+interface RemoteControlProps {
+  compact?: boolean
+}
+
+export default memo(({ compact = false }: RemoteControlProps) => {
   const popupRef = useRef<PopupType>(null)
   const syncStatus = useStatus()
   const playMusicInfo = usePlayMusicInfo()
@@ -25,15 +29,29 @@ export default memo(() => {
   const [cars, setCars] = useState<LX.Sync.RemoteControl.CarInfo[]>([])
   const [loading, setLoading] = useState(false)
 
-  const refresh = useCallback(() => {
+  const refresh = useCallback((silent = false) => {
+    if (!syncStatus.status) {
+      setCars([])
+      return
+    }
     setLoading(true)
     void getOnlineCars(getClient()).then(setCars).catch(err => {
       setCars([])
-      toast(err.message == 'sync_offline' ? '同步服务未连接' : '未发现在线车机')
+      if (!silent) toast(err.message == 'sync_offline' ? '同步服务未连接' : '未发现在线车机')
     }).finally(() => {
       setLoading(false)
     })
-  }, [])
+  }, [syncStatus.status])
+
+  useEffect(() => {
+    if (!compact || !syncStatus.status) {
+      if (!syncStatus.status) setCars([])
+      return
+    }
+    refresh(true)
+    const timer = setInterval(() => { refresh(true) }, 15000)
+    return () => { clearInterval(timer) }
+  }, [compact, refresh, syncStatus.status])
 
   const show = useCallback(() => {
     popupRef.current?.setVisible(true)
@@ -63,16 +81,23 @@ export default memo(() => {
 
   return (
     <>
-      <View style={styles.entry}>
-        <Button disabled={!syncStatus.status} onPress={show}>控制在线车机</Button>
-        <Text size={12} color={theme['c-font-label']}>
-          {syncStatus.status ? '仅显示当前在线的车机' : '连接同步服务后可用'}
-        </Text>
-      </View>
+      {compact
+        ? cars.length
+          ? <TouchableOpacity style={styles.compactEntry} activeOpacity={0.65} onPress={show}>
+              <View style={{ ...styles.onlineDot, backgroundColor: theme['c-primary'] }} />
+              <Text size={13}>车机</Text>
+            </TouchableOpacity>
+          : null
+        : <View style={styles.entry}>
+            <Button disabled={!syncStatus.status} onPress={show}>控制在线车机</Button>
+            <Text size={12} color={theme['c-font-label']}>
+              {syncStatus.status ? '仅显示当前在线的车机' : '连接同步服务后可用'}
+            </Text>
+          </View>}
       <Popup ref={popupRef} title="在线车机控制">
         <ScrollView contentContainerStyle={styles.popupContent}>
           <View style={styles.topActions}>
-            <Button disabled={loading} onPress={refresh}>{loading ? '处理中…' : '刷新状态'}</Button>
+            <Button disabled={loading} onPress={() => { refresh() }}>{loading ? '处理中…' : '刷新状态'}</Button>
           </View>
           {cars.length ? cars.map(car => (
             <View key={car.clientId} style={{ ...styles.car, borderColor: theme['c-border-background'] }}>
@@ -99,6 +124,20 @@ const styles = createStyle({
     marginBottom: 15,
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  compactEntry: {
+    height: 34,
+    minWidth: 58,
+    paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  onlineDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    marginRight: 5,
   },
   popupContent: {
     padding: 15,
