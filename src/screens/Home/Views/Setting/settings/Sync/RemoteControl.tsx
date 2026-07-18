@@ -39,6 +39,7 @@ interface ControlButtonProps {
 
 const ControlButton = ({ icon, label, onPress, disabled = false, primary = false }: ControlButtonProps) => {
   const theme = useTheme()
+  const foregroundColor = primary ? theme['c-1000'] : theme['c-font']
   return (
     <TouchableOpacity
       accessibilityLabel={label}
@@ -48,8 +49,8 @@ const ControlButton = ({ icon, label, onPress, disabled = false, primary = false
       style={{ ...styles.controlButton, opacity: disabled ? 0.4 : 1, backgroundColor: primary ? theme['c-primary'] : theme['c-primary-light-100-alpha-100'] }}
       onPress={onPress}
     >
-      <Icon name={icon} size={primary ? 25 : 21} color={primary ? theme['c-primary-font'] : theme['c-primary-font']} />
-      <Text style={styles.controlLabel} size={12} color={primary ? theme['c-primary-font'] : theme['c-primary-font']}>{label}</Text>
+      <Icon name={icon} size={primary ? 25 : 21} color={foregroundColor} />
+      <Text style={styles.controlLabel} size={12} color={foregroundColor}>{label}</Text>
     </TouchableOpacity>
   )
 }
@@ -159,8 +160,8 @@ export default memo(({ compact = false }: RemoteControlProps) => {
           : null
         : <View style={styles.entry}>
             <TouchableOpacity disabled={!syncStatus.status} activeOpacity={0.7} style={{ ...styles.entryButton, opacity: syncStatus.status ? 1 : 0.4, backgroundColor: theme['c-primary'] }} onPress={show}>
-              <Icon name="logo" size={18} color={theme['c-primary-font']} />
-              <Text style={styles.entryButtonText} size={15} color={theme['c-primary-font']}>控制在线车机</Text>
+              <Icon name="logo" size={18} color={theme['c-1000']} />
+              <Text style={styles.entryButtonText} size={15} color={theme['c-1000']}>控制在线车机</Text>
             </TouchableOpacity>
             <Text style={styles.entryHint} size={12} color={theme['c-font-label']}>{syncStatus.status ? formatUpdatedAt(updatedAt) : '连接同步服务后可用'}</Text>
           </View>}
@@ -210,8 +211,8 @@ export default memo(({ compact = false }: RemoteControlProps) => {
                       <ControlButton icon="nextMusic" label="下一首" disabled={pending} onPress={() => { sendCommand(car, { action: 'next' }) }} />
                     </View>
                     <TouchableOpacity disabled={pending || !playMusicInfo.musicInfo} activeOpacity={0.72} style={{ ...styles.sendButton, opacity: pending || !playMusicInfo.musicInfo ? 0.4 : 1, backgroundColor: theme['c-primary'] }} onPress={() => { playOnCar(car) }}>
-                      <Icon name="share" size={18} color={theme['c-primary-font']} />
-                      <Text style={styles.sendButtonText} size={15} color={theme['c-primary-font']}>{playMusicInfo.musicInfo ? `在 ${car.deviceName} 播放手机当前歌曲` : '先在手机选择一首歌曲'}</Text>
+                      <Icon name="share" size={18} color={theme['c-1000']} />
+                      <Text style={styles.sendButtonText} size={15} color={theme['c-1000']}>{playMusicInfo.musicInfo ? `在 ${car.deviceName} 播放手机当前歌曲` : '先在手机选择一首歌曲'}</Text>
                     </TouchableOpacity>
                   </View>
                 )
@@ -220,7 +221,7 @@ export default memo(({ compact = false }: RemoteControlProps) => {
                 <Text style={styles.emptyTitle} size={17}>未发现在线车机</Text>
                 <Text style={styles.emptyText} size={13} color={theme['c-font-label']}>确认车机已连接相同同步账号后，再刷新状态。</Text>
                 <TouchableOpacity style={{ ...styles.retryButton, backgroundColor: theme['c-primary-light-100-alpha-100'] }} onPress={() => { refresh() }}>
-                  <Text size={14} color={theme['c-primary-font']}>重新刷新</Text>
+                  <Text size={14} color={theme['c-font']}>重新刷新</Text>
                 </TouchableOpacity>
               </View>}
             </ScrollView>

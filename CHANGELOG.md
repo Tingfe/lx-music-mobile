@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.11] - 2026-07-18
+
+### 更新与深色模式
+
+- 更新检查改为读取仓库公开更新清单，并在 Raw GitHub 与 jsDelivr 间自动切换，避免 GitHub REST API 匿名限流导致“获取失败”。
+- 构建工作流会在发布测试版或正式版后自动更新该清单；应用内只下载 universal APK。
+- 调整车机控制页深色主题的前景色：主操作、播放按钮、切歌按钮和重试按钮均使用高对比文字与图标。
+
 ## [1.8.10] - 2026-07-18
 
 ### 车机遥控面板
