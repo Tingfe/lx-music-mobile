@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "stable": {
+    "version": "1.8.7",
+    "desc": "正式版 v1.8.7",
+    "assets": [
+      {
+        "name": "lx-music-mobile-mobile-v1.8.7-universal.apk",
+        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/v1.8.7/lx-music-mobile-mobile-v1.8.7-universal.apk"
+      }
+    ]
+  },
+  "preview": {
+    "version": "1.8.10",
+    "desc": "测试版 v1.8.10\n- 车机控制面板重新设计\n- 修复更新检查依赖 GitHub API 配额的问题",
+    "assets": [
+      {
+        "name": "lx-music-mobile-mobile-v1.8.10-universal.apk",
+        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/test-v1.8.10-22/lx-music-mobile-mobile-v1.8.10-universal.apk"
+      }
+    ]
+  }
+}
