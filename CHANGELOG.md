@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8.9] - 2026-07-18
+
+### 车机协同
+
+- 打开“控制在线车机”后持续刷新在线车机状态，并显示最近一次状态读取时间。
+- 保持仅向当前在线车机发送指令的约束；车机离线时不会缓存播放、切歌或投送歌曲命令。
+
 Project versioning adheres to [Semantic Versioning](http://semver.org/).
 Commit convention is based on [Conventional Commits](http://conventionalcommits.org).
 Change log format is based on [Keep a Changelog](http://keepachangelog.com/).

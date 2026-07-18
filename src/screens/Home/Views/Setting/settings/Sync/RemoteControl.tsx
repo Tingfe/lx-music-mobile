@@ -28,6 +28,7 @@ export default memo(({ compact = false }: RemoteControlProps) => {
   const theme = useTheme()
   const [cars, setCars] = useState<LX.Sync.RemoteControl.CarInfo[]>([])
   const [loading, setLoading] = useState(false)
+  const [updatedAt, setUpdatedAt] = useState<number | null>(null)
 
   const refresh = useCallback((silent = false) => {
     if (!syncStatus.status) {
@@ -35,7 +36,10 @@ export default memo(({ compact = false }: RemoteControlProps) => {
       return
     }
     setLoading(true)
-    void getOnlineCars(getClient()).then(setCars).catch(err => {
+    void getOnlineCars(getClient()).then(cars => {
+      setCars(cars)
+      setUpdatedAt(Date.now())
+    }).catch(err => {
       setCars([])
       if (!silent) toast(err.message == 'sync_offline' ? '同步服务未连接' : '未发现在线车机')
     }).finally(() => {
@@ -44,12 +48,12 @@ export default memo(({ compact = false }: RemoteControlProps) => {
   }, [syncStatus.status])
 
   useEffect(() => {
-    if (!compact || !syncStatus.status) {
+    if (!syncStatus.status) {
       if (!syncStatus.status) setCars([])
       return
     }
     refresh(true)
-    const timer = setInterval(() => { refresh(true) }, 15000)
+    const timer = setInterval(() => { refresh(true) }, compact ? 15000 : 8000)
     return () => { clearInterval(timer) }
   }, [compact, refresh, syncStatus.status])
 
@@ -91,7 +95,7 @@ export default memo(({ compact = false }: RemoteControlProps) => {
         : <View style={styles.entry}>
             <Button disabled={!syncStatus.status} onPress={show}>控制在线车机</Button>
             <Text size={12} color={theme['c-font-label']}>
-              {syncStatus.status ? '仅显示当前在线的车机' : '连接同步服务后可用'}
+              {syncStatus.status ? (updatedAt ? `仅显示当前在线车机 · ${new Date(updatedAt).toLocaleTimeString()}` : '正在读取在线车机状态') : '连接同步服务后可用'}
             </Text>
           </View>}
       <Popup ref={popupRef} title="在线车机控制">
