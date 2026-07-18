@@ -32,6 +32,7 @@ declare global {
         remoteQueueDislike: LX.Sync.ServerSyncDislikeActions
         remoteQueueUserApi: LX.Sync.ServerSyncUserApiActions
         remoteQueueSettings: LX.Sync.ServerSyncSettingsActions
+        remoteQueueRemoteControl: LX.Sync.ServerSyncRemoteControlActions
       }
 
 

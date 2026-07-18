@@ -295,6 +295,15 @@ export const playList = async(listId: string, index: number) => {
   await handlePlay()
 }
 
+/** Play a song delivered by an online remote controller. */
+export const playRemoteMusic = async(musicInfo: LX.Music.MusicInfo) => {
+  setPlayListId(null)
+  setPlayMusicInfo(null, musicInfo, true)
+  clearPlayedList()
+  clearTempPlayeList()
+  await handlePlay()
+}
+
 const handleToggleStop = async() => {
   await stop()
   setTimeout(() => {
@@ -665,4 +674,3 @@ export const dislikeMusic = async() => {
   await addDislikeInfo([{ name: minfo.name, singer: minfo.singer }])
   await playNext(true)
 }
-

@@ -31,6 +31,36 @@ declare namespace LX {
     }>
     type ServerSyncHandlerSettingsActions<Socket> = WarpSyncHandlerActions<Socket, ServerSyncSettingsActions>
 
+    namespace RemoteControl {
+      type Command =
+        | { action: 'toggle' | 'next' | 'prev' }
+        | { action: 'play', musicInfo: LX.Music.MusicInfo }
+
+      interface Status {
+        isPlaying: boolean
+        musicInfo: LX.Music.MusicInfo | null
+      }
+
+      interface CarInfo {
+        clientId: string
+        deviceName: string
+        status: Status
+      }
+    }
+
+    type ServerSyncRemoteControlActions = WarpPromiseRecord<{
+      registerCar: () => void
+      getCars: () => RemoteControl.CarInfo[]
+      sendCommand: (clientId: string, command: RemoteControl.Command) => RemoteControl.Status
+    }>
+    type ServerSyncHandlerRemoteControlActions<Socket> = WarpSyncHandlerActions<Socket, ServerSyncRemoteControlActions>
+
+    type ClientSyncRemoteControlActions = WarpPromiseRecord<{
+      getStatus: () => RemoteControl.Status
+      onCommand: (command: RemoteControl.Command) => RemoteControl.Status
+    }>
+    type ClientSyncHandlerRemoteControlActions<Socket> = WarpSyncHandlerActions<Socket, ClientSyncRemoteControlActions>
+
     type ClientSyncActions = WarpPromiseRecord<{
       getEnabledFeatures: (serverType: ServerType, supportedFeatures: SupportedFeatures) => EnabledFeatures
       finished: () => void

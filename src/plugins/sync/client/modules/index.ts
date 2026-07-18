@@ -2,6 +2,7 @@ import * as list from './list'
 import * as dislike from './dislike'
 import * as userApi from './userApi'
 import * as settings from './settings'
+import * as remoteControl from './remoteControl'
 // export * as theme from './theme'
 
 
@@ -10,6 +11,7 @@ export const callObj = Object.assign({},
   dislike.handler,
   userApi.handler,
   settings.handler,
+  remoteControl.handler,
 )
 
 
