@@ -41,8 +41,12 @@ const handler: LX.Sync.ClientSyncHandlerUserApiActions<LX.Sync.Socket> = {
       })
     }
     event.on('list_changed', listener)
-    unregister = () => event.off('list_changed', listener)
-    socket.onClose(() => unregister?.())
+    const removeListener = () => event.off('list_changed', listener)
+    unregister = removeListener
+    socket.onClose(() => {
+      removeListener()
+      if (unregister === removeListener) unregister = null
+    })
   },
 }
 

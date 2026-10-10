@@ -1,9 +1,10 @@
 {
   "name": "lx-music-mobile",
-  "version": "1.8.11",
-  "versionCode": 83,
+  "version": "1.8.12",
+  "versionCode": 84,
   "private": true,
   "scripts": {
+    "test:regression": "node --test tests/*.test.cjs",
     "dev": "react-native run-android --active-arch-only",
     "ios": "react-native run-ios",
     "start": "react-native start",

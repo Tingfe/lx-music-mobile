@@ -3,6 +3,8 @@ import { addUserApi, getUserApiScript, overwriteUserApiSyncData, removeUserApi a
 import { destroy, loadScript } from '@/utils/nativeModules/userApi'
 import { log as writeLog } from '@/utils/log'
 import settingState from '@/store/setting/state'
+import { setApiSource } from './apiSource'
+import apiSourceInfo from '@/utils/musicSdk/api-source-info'
 
 
 export const setUserApi = async(apiId: string) => {
@@ -42,7 +44,9 @@ export const overwriteUserApisFromSync = async(data: UserApiSyncData) => {
   const list = await overwriteUserApiSyncData(data)
   action.setUserApiList(list)
   const activeId = settingState.setting['common.apiSource']
-  if (activeId && list.some(api => api.id == activeId)) await setUserApi(activeId)
+  if (!activeId || !/^user_api/.test(activeId)) return
+  if (list.some(api => api.id == activeId)) await setUserApi(activeId)
+  else setApiSource(apiSourceInfo.find(api => !api.disabled)?.id ?? list[0]?.id ?? '')
 }
 
 export const setUserApiAllowShowUpdateAlert = async(id: string, enable: boolean) => {

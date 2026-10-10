@@ -22,6 +22,9 @@ jobs:
       - name: Setup Env
         uses: ./.github/actions/setup
 
+      - name: Sync regression checks
+        run: npm run test:regression
+
       - name: Create temporary test signing config
         shell: bash
         run: |

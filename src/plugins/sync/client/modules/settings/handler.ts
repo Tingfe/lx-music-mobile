@@ -1,34 +1,19 @@
-import { setLanguage, updateSetting } from '@/core/common'
-import { applyTheme } from '@/core/theme'
-import { getTheme } from '@/theme/themes'
+import { updateSetting } from '@/core/common'
 import settingState from '@/store/setting/state'
 import { SYNC_CLOSE_CODE } from '@/plugins/sync/constants'
+import { filterSettingsSyncData, syncedSettingKeys } from '@/plugins/sync/settings'
 
-const syncKeys: Array<keyof LX.AppSetting> = [
-  'common.langId', 'common.sourceNameType', 'common.autoHidePlayBar', 'common.homePageScroll', 'common.allowProgressBarSeek', 'common.showBackBtn', 'common.showExitBtn',
-  'player.togglePlayMethod', 'player.playQuality', 'player.playbackRate', 'player.isSavePlayTime', 'player.isShowLyricTranslation', 'player.isShowLyricRoma', 'player.isShowNotificationImage',
-  'search.isShowHotSearch', 'search.isShowHistorySearch',
-  'list.isClickPlayList', 'list.isShowSource', 'list.isShowAlbumName', 'list.isShowInterval', 'list.isSaveScrollLocation', 'list.addMusicLocationType',
-  'theme.id', 'theme.lightId', 'theme.darkId', 'theme.hideBgDark', 'theme.dynamicBg', 'theme.fontShadow',
-]
+const syncKeys = syncedSettingKeys as Array<keyof LX.AppSetting>
 const syncKeySet = new Set<string>(syncKeys)
 
 const getSettingsSyncData = (): LX.Sync.SettingsSyncData => {
   const data: LX.Sync.SettingsSyncData = {}
   for (const key of syncKeys) data[key] = settingState.setting[key] as LX.Sync.SettingsSyncData[string]
-  return data
+  return filterSettingsSyncData(data)
 }
 
 const applySettingsSyncData = async(data: LX.Sync.SettingsSyncData) => {
-  const setting: Partial<LX.AppSetting> = {}
-  for (const [key, value] of Object.entries(data)) {
-    if (!syncKeySet.has(key)) continue
-    ;(setting as Record<string, unknown>)[key] = value
-  }
-  updateSetting(setting)
-  const language = setting['common.langId']
-  if (language) setLanguage(language)
-  if ('theme.id' in setting || 'theme.hideBgDark' in setting) applyTheme(await getTheme())
+  updateSetting(filterSettingsSyncData(data) as Partial<LX.AppSetting>)
 }
 
 let applyingRemoteData = false
@@ -60,11 +45,15 @@ const handler: LX.Sync.ClientSyncHandlerSettingsActions<LX.Sync.Socket> = {
     unregister?.()
     const listener = (keys: Array<keyof LX.AppSetting>) => {
       if (applyingRemoteData || !socket.moduleReadys.settings || !keys.some(key => syncKeySet.has(key))) return
-      void socket.remoteQueueSettings.onSettingsSyncData(getSettingsSyncData()).catch(() => socket.close(SYNC_CLOSE_CODE.failed))
+      void socket.remoteQueueSettings.onSettingsSyncData(getSettingsSyncData()).catch(() => { socket.close(SYNC_CLOSE_CODE.failed) })
     }
     global.state_event.on('configUpdated', listener)
-    unregister = () => global.state_event.off('configUpdated', listener)
-    socket.onClose(() => unregister?.())
+    const removeListener = () => { global.state_event.off('configUpdated', listener) }
+    unregister = removeListener
+    socket.onClose(() => {
+      removeListener()
+      if (unregister === removeListener) unregister = null
+    })
   },
 }
 

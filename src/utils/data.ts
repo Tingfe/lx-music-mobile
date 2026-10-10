@@ -454,7 +454,7 @@ export const setSyncAuthKey = async(serverId: string, info: LX.Sync.KeyInfo) => 
 }
 export const removeSyncAuthKey = async(serverId: string) => {
   const keys = await getData<Record<string, LX.Sync.KeyInfo>>(syncAuthKeyPrefix)
-  if (!keys || !keys[serverId]) return
+  if (!keys?.[serverId]) return
   delete keys[serverId]
   await saveData(syncAuthKeyPrefix, keys)
 }

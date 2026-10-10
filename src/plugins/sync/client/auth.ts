@@ -98,8 +98,6 @@ const auth = async(urlInfo: LX.Sync.UrlInfo, serverId: string, authCode?: string
 }
 
 export default async(urlInfo: LX.Sync.UrlInfo, authCode?: string) => {
-  console.log('connect: ', urlInfo.href, authCode)
-  console.log(`${urlInfo.httpProtocol}//${urlInfo.hostPath}/hello`)
   if (!await hello(urlInfo)) throw new Error(SYNC_CODE.connectServiceFailed)
   const serverId = await getServerId(urlInfo)
   if (!serverId) throw new Error(SYNC_CODE.getServiceIdFailed)

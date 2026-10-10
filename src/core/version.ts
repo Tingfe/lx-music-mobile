@@ -20,8 +20,10 @@ export const hideModal = (componentId: string) => {
   void Navigation.dismissOverlay(componentId)
 }
 
+let checkId = 0
 export const checkUpdate = async() => {
-  versionActions.setVersionInfo({ status: 'checking' })
+  const id = ++checkId
+  versionActions.setVersionInfo({ status: 'checking', isLatest: false, isUnknown: false })
   let versionInfo: InitState['versionInfo'] = { ...versionState.versionInfo }
   try {
     const { version, desc, history, assets } = await getVersionInfo(settingState.setting['common.isEnablePreReleaseUpdate'])
@@ -38,6 +40,7 @@ export const checkUpdate = async() => {
       history: [],
     }
   }
+  if (id != checkId) return
   // const versionInfo = {
   //   version: '1.9.0',
   //   desc: '- 更新xxx\n- 修复xxx123的萨达修复xxx123的萨达修复xxx123的萨达修复xxx123的萨达修复xxx123的萨达',
@@ -49,9 +52,7 @@ export const checkUpdate = async() => {
   } else {
     versionInfo.status = 'idle'
     versionInfo.isUnknown = false
-    if (compareVer(versionInfo.version, versionInfo.newVersion.version) != -1) {
-      versionInfo.isLatest = true
-    }
+    versionInfo.isLatest = compareVer(versionInfo.version, versionInfo.newVersion.version) != -1
   }
 
   versionActions.setVersionInfo(versionInfo)

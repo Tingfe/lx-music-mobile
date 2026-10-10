@@ -4,7 +4,7 @@
 
 - 下载测试包：[Releases](https://github.com/Tingfe/lx-music-mobile/releases)
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
-- 当前版本：`v1.8.11`
+- 当前版本：`v1.8.12`
 - 支持 Android 5 及以上；发布包仅提供一个 `universal.apk`。
 
 ## 本 Fork 的功能
@@ -16,9 +16,17 @@
 - 应用内更新读取本 Fork 的公开更新清单，不受 GitHub REST API 匿名限流影响；`master` 自动构建的 Pre-release 测试 APK 也可在开启测试版更新后直接检测和安装。
 - 默认只检查正式版；在「设置 → 关于」开启“接收测试版更新”后，可直接检测和安装最新 Pre-release 的 universal APK。
 
+## v1.8.12 稳定性改进
+
+- 重连和切换服务时隔离旧连接回调，避免旧会话覆盖当前同步状态。
+- 手机和服务端统一设置白名单及类型、枚举、范围校验；主题、语言、界面布局保持设备本地独立。
+- 修复更新检查状态残留，以及同步删除当前音源后的运行状态。
+- 配合服务端 v2.1.12，车机短暂状态超时后可自动恢复发现，控制失败会显示重试提示。
+- 认证日志不再输出连接码，自动发布前运行同步回归检查。
+
 ## 开始使用
 
-1. 部署或升级同步服务到 [`v2.1.11` 及以上](https://github.com/Tingfe/lx-music-sync-server/releases)。
+1. 部署或升级同步服务到 [`v2.1.12` 及以上](https://github.com/Tingfe/lx-music-sync-server/releases)。
 2. 在「设置 → 数据同步」填写私有服务地址、账号和连接码。
 3. 使用相同账号连接手机、桌面和车机；设置中的“控制在线车机”保留用于手动刷新和排查连接。
 

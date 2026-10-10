@@ -131,10 +131,12 @@ export default memo(({ compact = false }: RemoteControlProps) => {
       setCars(items => items.map(item => item.clientId == car.clientId ? { ...item, status } : item))
       setUpdatedAt(Date.now())
       setStatusText(command.action == 'play' ? `已请求 ${car.deviceName} 播放歌曲` : `已控制 ${car.deviceName}`)
-    }).catch(() => {
-      setCars(items => items.filter(item => item.clientId != car.clientId))
-      setStatusText(`${car.deviceName} 已离线或暂不支持遥控`)
-      toast(`${car.deviceName} 已离线或暂不支持遥控`)
+    }).catch((err: Error) => {
+      const offline = err.message == 'car_offline' || err.message == 'sync_offline'
+      if (offline) setCars(items => items.filter(item => item.clientId != car.clientId))
+      const message = offline ? `${car.deviceName} 已离线` : `${car.deviceName} 操作未完成，请刷新状态后重试`
+      setStatusText(message)
+      toast(message)
     }).finally(() => {
       setPendingCarId(null)
     })
