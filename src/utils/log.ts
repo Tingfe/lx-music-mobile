@@ -1,5 +1,6 @@
 // import { requestStoragePermission } from '@/utils/common'
 import { temporaryDirectoryPath, existsFile, appendFile, unlink, writeFile, readFile } from '@/utils/fs'
+import { formatLogValue } from './privacy'
 
 const logPath = temporaryDirectoryPath + '/error.log'
 
@@ -37,7 +38,7 @@ export const clearLogs = async() => {
 export const log = {
   info(...msgs: any[]) {
     // console.info(...msgs)
-    const msg = msgs.map(m => typeof m == 'string' ? m : m instanceof Error ? m.stack ?? m.message : JSON.stringify(m)).join(' ')
+    const msg = msgs.map(formatLogValue).join(' ')
     if (msg.startsWith('%c')) return
     const time = new Date().toLocaleString()
     if (logTools.tempLog) {
@@ -46,14 +47,14 @@ export const log = {
   },
   warn(...msgs: any[]) {
     // console.warn(...msgs)
-    const msg = msgs.map(m => typeof m == 'string' ? m : m instanceof Error ? m.stack ?? m.message : JSON.stringify(m)).join(' ')
+    const msg = msgs.map(formatLogValue).join(' ')
     const time = new Date().toLocaleString()
     if (logTools.tempLog) {
       logTools.tempLog.push({ type: 'WARN', time, text: msg })
     } else logTools.writeLog(`${time} WARN ${msg}`)
   },
   error(...msgs: any[]) {
-    const msg = msgs.map(m => typeof m == 'string' ? m : m instanceof Error ? m.stack ?? m.message : JSON.stringify(m)).join(' ')
+    const msg = msgs.map(formatLogValue).join(' ')
     const time = new Date().toLocaleString()
     if (logTools.tempLog) {
       logTools.tempLog.push({ type: 'ERROR', time, text: msg })

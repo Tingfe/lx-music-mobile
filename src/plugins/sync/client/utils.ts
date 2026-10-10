@@ -101,13 +101,6 @@ export const parseUrl = (href: string): LX.Sync.UrlInfo => {
   // if (href.endsWith('/')) href = href.replace(/\/$/, '')
   const httpProtocol = /^https:/.test(href) ? 'https:' : 'http:'
 
-  console.log({
-    wsProtocol: httpProtocol == 'https:' ? 'wss:' : 'ws:',
-    httpProtocol,
-    hostPath: href.replace(httpProtocol + '//', ''),
-    href,
-  })
-
   return {
     wsProtocol: httpProtocol == 'https:' ? 'wss:' : 'ws:',
     httpProtocol,

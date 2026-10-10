@@ -4,6 +4,7 @@ import BackgroundTimer from 'react-native-background-timer'
 import { requestMsg } from './message'
 import { bHh } from './musicSdk/options'
 import { deflateRaw } from 'pako'
+import { formatLogValue } from './privacy'
 
 const defaultHeaders = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36',
@@ -21,7 +22,7 @@ export const httpFetch = (url, options = { method: 'get' }) => {
   const requestObj = fetchData(url, options)
   return {
     promise: requestObj.request.catch(err => {
-      console.log('出错', err.message)
+      console.log('出错', formatLogValue(err.message))
       switch (err.message) {
         case 'socket hang up':
           return Promise.reject(new Error(requestMsg.unachievable))
@@ -167,8 +168,6 @@ const blobToBuffer = (blob) => {
 }
 
 const fetchData = (url, { timeout = 15000, ...options }) => {
-  console.log('---start---', url)
-
   const controller = new global.AbortController()
   let id = BackgroundTimer.setTimeout(() => {
     id = null

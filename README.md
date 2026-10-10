@@ -4,7 +4,7 @@
 
 - 下载测试包：[Releases](https://github.com/Tingfe/lx-music-mobile/releases)
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
-- 当前版本：`v1.8.12`
+- 当前版本：`v1.8.13`
 - 支持 Android 5 及以上；发布包仅提供一个 `universal.apk`。
 
 ## 本 Fork 的功能
@@ -39,6 +39,10 @@
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
 
 自定义音源是可执行 JavaScript，只应导入可信来源，并只在自己控制的账号和服务之间同步。
+
+## 隐私保护
+
+v1.8.13 清理认证与完整请求地址日志，加入日志脱敏、敏感文件忽略规则和发布前隐私回归检查。公网同步必须使用 HTTPS/WSS；已有旧日志不会自动清理。详情见：[隐私与安全说明](docs/PRIVACY_SECURITY.md)。
 
 ## 上游项目与许可证
 

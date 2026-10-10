@@ -35,6 +35,7 @@ keystore.properties
 
 # node.js
 #
+.env
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -66,3 +67,12 @@ buck-out/
 
 # testing
 /coverage
+# Private local configuration and signing material
+.env.*
+!.env.example
+!.env.sample
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key

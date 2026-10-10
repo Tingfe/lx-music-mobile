@@ -23,7 +23,6 @@ const hello = async(urlInfo: LX.Sync.UrlInfo) => request(`${urlInfo.httpProtocol
   })
   .catch((err: any) => {
     log.error('[auth] hello', err.message)
-    console.log(err)
     return false
   })
 
@@ -34,7 +33,6 @@ const getServerId = async(urlInfo: LX.Sync.UrlInfo) => request(`${urlInfo.httpPr
   })
   .catch((err: any) => {
     log.error('[auth] getServerId', err.message)
-    console.log(err)
     throw err
   })
 
