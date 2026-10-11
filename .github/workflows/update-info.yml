@@ -56,3 +56,17 @@ jobs:
             const content = Buffer.from(raw).toString('base64')
             if (existing && existing.data.content.replace(/\s/g, '') === content) return
             await github.rest.repos.createOrUpdateFileContents({ owner, repo, branch, path, content, sha: existing?.data.sha, message: 'build: refresh public update information' })
+      - name: Refresh CDN metadata cache
+        continue-on-error: true
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const path = '/gh/' + context.repo.owner + '/' + context.repo.repo + '@release-info/mobile.json'
+            const response = await fetch('https://purge.jsdelivr.net' + path, { signal: AbortSignal.timeout(30000) })
+            if (!response.ok) throw new Error('CDN refresh HTTP ' + response.status)
+            const result = await response.json()
+            const entry = result.paths?.[path]
+            if (result.status !== 'finished' || !entry || entry.throttled || Object.values(entry.providers || {}).some(ok => !ok)) {
+              throw new Error('CDN refresh incomplete; the raw GitHub manifest remains available')
+            }
+            core.info('CDN refresh accepted; edge propagation can take additional time')
