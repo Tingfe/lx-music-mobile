@@ -4,7 +4,8 @@
 
 - 下载测试包：[Releases](https://github.com/Tingfe/lx-music-mobile/releases)
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
-- 当前版本：`v1.9.2`
+- 当前版本：`v1.9.3`
+- 更新检查修复与维护说明：[docs/UPDATE_CHECK.md](docs/UPDATE_CHECK.md)
 - 支持 Android 5 及以上；发布包仅提供一个 `universal.apk`。
 
 ## 本 Fork 的功能

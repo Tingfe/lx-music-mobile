@@ -3,6 +3,8 @@ import { downloadFile, stopDownload, temporaryDirectoryPath } from '@/utils/fs'
 import { getPackageName, getSupportedAbis, installApk } from '@/utils/nativeModules/utils'
 import { APP_PROVIDER_NAME } from '@/config/constant'
 import { RELEASE_MANIFEST_URLS } from '@/config/release'
+import { compareVer } from '@/utils'
+import { getReleaseInfo } from './releaseManifest'
 
 const abis = [
   'arm64-v8a',
@@ -12,52 +14,10 @@ const abis = [
   'universal',
 ]
 
-const request = async(url, retryNum = 0) => {
-  return new Promise((resolve, reject) => {
-    httpGet(url, {
-      timeout: 10000,
-    }, (err, resp, body) => {
-      if (err || resp.statusCode != 200) {
-        ++retryNum >= 3
-          ? reject(err || new Error(resp.statusMessage || resp.statusCode))
-          : request(url, retryNum).then(resolve).catch(reject)
-      } else resolve(body)
-    })
-  })
-}
-
 export const getVersionInfo = async(includePreRelease = false) => {
-  let manifest
-  let lastError
-  for (const url of RELEASE_MANIFEST_URLS) {
-    try {
-      const cacheKey = Math.floor(Date.now() / 300000)
-      const body = await request(`${url}?t=${cacheKey}`)
-      manifest = typeof body == 'string' ? JSON.parse(body) : body
-      if (manifest?.schemaVersion == 1) break
-      lastError = new Error('invalid update manifest')
-    } catch (error) {
-      lastError = error
-    }
-  }
-  if (manifest?.schemaVersion != 1) throw lastError ?? new Error('update manifest unavailable')
-
-  const release = includePreRelease ? manifest.preview ?? manifest.stable : manifest.stable
-  if (!release || !Array.isArray(release.assets)) throw new Error('invalid release')
-
   const isCarEdition = (await getPackageName()).endsWith('.car')
   const assetName = isCarEdition ? /-car-v.*-(?:universal|arm64-v8a|armeabi-v7a|x86_64|x86)\.apk$/ : /-mobile-v.*-(?:universal|arm64-v8a|armeabi-v7a|x86_64|x86)\.apk$/
-  const assets = release.assets.filter(asset => assetName.test(asset.name))
-  if (!assets.length) throw new Error('no matching APK asset')
-  const version = release.version
-  if (!version) throw new Error('invalid release version')
-
-  return {
-    version,
-    desc: release.body || '',
-    history: [],
-    assets,
-  }
+  return getReleaseInfo(httpGet, RELEASE_MANIFEST_URLS, includePreRelease, compareVer, asset => assetName.test(asset.name))
 }
 
 const getTargetAbi = async() => {

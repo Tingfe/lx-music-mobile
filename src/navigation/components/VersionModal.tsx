@@ -42,7 +42,7 @@ const Content = memo(({ title, newVersionInfo }: {
     <View style={styles.main}>
       <Text style={styles.title}>{title}</Text>
       <ScrollView style={styles.content} keyboardShouldPersistTaps={'always'}>
-        <Text style={styles.label}>{t('version_label_latest_ver')}{newVersionInfo?.version}</Text>
+        <Text style={styles.label}>{t('version_label_latest_ver')}{newVersionInfo?.version ?? '—'}</Text>
         <Text style={styles.label}>{t('version_label_current_ver')}{currentVer}</Text>
         {
           newVersionInfo?.desc
@@ -175,7 +175,7 @@ const VersionModal = ({ componentId }: { componentId: string }) => {
 
   return (
     <ModalContent>
-      <Content title={title} newVersionInfo={versionInfo.newVersion} />
+      <Content title={title} newVersionInfo={versionInfo.isUnknown ? null : versionInfo.newVersion} />
       { tip.length ? <Text style={styles.tip} color={theme['c-primary-font']}>{tip}</Text> : null }
       <View style={styles.btns}>
         {

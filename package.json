@@ -1,9 +1,10 @@
 {
   "name": "lx-music-mobile",
-  "version": "1.9.2",
-  "versionCode": 87,
+  "version": "1.9.3",
+  "versionCode": 88,
   "private": true,
   "scripts": {
+    "test:update": "node --test tests/update-regression.test.cjs",
     "test:upstream": "node --test tests/upstream-regression.test.cjs",
     "test:gd-studio": "node --test tests/gd-studio.test.cjs",
     "test:privacy": "node --test tests/privacy.test.cjs",
