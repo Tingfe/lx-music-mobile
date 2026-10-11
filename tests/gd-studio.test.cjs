@@ -142,11 +142,13 @@ test('GD playback URLs never enter the legacy shared persistent cache', async() 
     '@common/constants': { APP_EVENT_NAMES: {}, DATA_KEYS: {}, DEFAULT_SETTING: {} },
     '@renderer/store/setting': { appSetting: setting },
     './musicSdk/gd-studio': gd,
+    './musicSdk/api-source': {},
   } : {
     '@/plugins/storage': { getData: () => ipc('get'), saveData: () => ipc('save') },
     '@/config/constant': { DEFAULT_SETTING: {}, LIST_IDS: {}, storageDataPrefix: {} },
     './common': { throttle: fn => fn }, '@/store/setting/state': { default: { setting } },
     './musicSdk/gd-studio': gd,
+    './musicSdk/api-source': {},
   }
   const cache = load(file, deps)
   assert.equal(await cache.getMusicUrl({ id: 'fixture' }, '320k'), '')

@@ -61,7 +61,7 @@ jobs:
             --target "$GITHUB_SHA" \
             --prerelease \
             --title "LX Music 测试版 v${VERSION} (${GITHUB_RUN_NUMBER})" \
-            --notes "新增可选 GD音乐台（网易云·在线播放），支持 128k、320k 和无损请求；请在设置中手动选择。原有搜索、歌单、同步及车机遥控保持不变。GD 当前禁止下载，其他允许下载的音源不受影响。测试签名 universal APK 内置 JavaScript bundle，无需 Metro；尚需真机验证。详见仓库 docs/GD_STUDIO.md。" \
+            --notes-file docs/RELEASE_NOTES.md \
             android/app/build/outputs/apk/mobile/release/*universal.apk
 
       - name: Publish stable release

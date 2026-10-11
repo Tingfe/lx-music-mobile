@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9.2] - 2026-10-11
+
+- 选择性引入上游搜索、歌单、歌曲匹配与歌词修复，保留 Fork 定制功能。
+- 新增单曲播放地址缓存清理，兼容 GD 短期内存缓存，保留 Android 旧设备与 universal 包兼容。
+- 增加上游回归检查和升级说明，详见 docs/UPSTREAM_SYNC.md。
+
 ## [1.8.13] - 2026-10-11
 
 ### 隐私保护

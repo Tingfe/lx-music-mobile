@@ -3,6 +3,7 @@ import { DEFAULT_SETTING, LIST_IDS, storageDataPrefix, type NAV_ID_Type } from '
 import { throttle } from './common'
 import settingState from '@/store/setting/state'
 import { GD_SOURCE_ID } from './musicSdk/gd-studio'
+import { apis } from './musicSdk/api-source'
 // import { gzip, ungzip } from '@/utils/nativeModules/gzip'
 // import { readFile, writeFile, temporaryDirectoryPath, unlink } from '@/utils/fs'
 // import { isNotificationsEnabled, openNotificationPermissionActivity, shareText } from '@/utils/nativeModules/utils'
@@ -343,6 +344,20 @@ export const removeListMusics = async(ids: string[]): Promise<void> => {
 
 
 // GD URLs stay in its short-lived memory cache, never in shared persistent storage.
+export const qualitys = ['128k', '320k', 'flac', 'flac24bit']
+export const hasMusicUrlByMusic = async(musicInfo: LX.Music.MusicInfo) => {
+  if (musicInfo.source == 'local') return false
+  if (settingState.setting['common.apiSource'] === GD_SOURCE_ID) {
+    return musicInfo.source == 'wy' && apis('wy').hasMusicUrl(musicInfo)
+  }
+  return getDataMultiple(qualitys.map(q => `${storageDataPrefix.musicUrl}${musicInfo.id}_${q}`))
+    .then(urls => urls.some(([, url]) => !!url))
+}
+export const clearMusicUrlByMusic = async(musicInfo: LX.Music.MusicInfo) => {
+  if (musicInfo.source == 'local') return
+  if (settingState.setting['common.apiSource'] === GD_SOURCE_ID && musicInfo.source == 'wy') apis('wy').clearMusicUrl(musicInfo)
+  await removeDataMultiple(qualitys.map(q => `${storageDataPrefix.musicUrl}${musicInfo.id}_${q}`))
+}
 export const getMusicUrl = async(musicInfo: LX.Music.MusicInfo, type: LX.Quality) => settingState.setting['common.apiSource'] === GD_SOURCE_ID
   ? ''
   : getData<string>(`${storageDataPrefix.musicUrl}${musicInfo.id}_${type}`).then((url) => url ?? '')

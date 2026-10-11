@@ -13,9 +13,21 @@ export const assertDownloadAllowed = (sourceId) => {
 
 export const createGdStudioApi = (request, isActive, now = Date.now) => {
   const cache = new Map()
+  let cacheRevision = 0
   let requests = []
   return {
+    hasMusicUrl(musicInfo) {
+      const prefix = String(musicInfo.songmid ?? musicInfo.meta?.songId ?? '') + '_'
+      return [...cache].some(([key, value]) => key.startsWith(prefix) && now() - value.time < CACHE_MS)
+    },
+    clearMusicUrl(musicInfo) {
+      const prefix = String(musicInfo.songmid ?? musicInfo.meta?.songId ?? '') + '_'
+      for (const key of cache.keys()) if (key.startsWith(prefix)) cache.delete(key)
+      // A request started before clearing must not repopulate the cleared cache.
+      cacheRevision++
+    },
     getMusicUrl(musicInfo, quality = '320k', isRefresh = false) {
+      const revision = cacheRevision
       let cancelled = false
       let network = null
       const cancel = () => {
@@ -64,7 +76,7 @@ export const createGdStudioApi = (request, isActive, now = Date.now) => {
         const type = actualBr > 320 ? 'flac' : actualBr >= 320 ? '320k' : '128k'
         const result = { url: body.url, type, bitrate: actualBr }
         if (cache.size >= 40) cache.delete(cache.keys().next().value)
-        cache.set(key, { time: now(), result })
+        if (revision === cacheRevision) cache.set(key, { time: now(), result })
         return result
       })
       return { promise, cancelHttp: cancel, canceleFn: cancel }
