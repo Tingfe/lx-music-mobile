@@ -11,12 +11,12 @@
     ]
   },
   "preview": {
-    "version": "1.8.13",
-    "desc": "测试版 v1.8.13",
+    "version": "1.8.14",
+    "desc": "测试版 v1.8.14",
     "assets": [
       {
-        "name": "lx-music-mobile-mobile-v1.8.13-universal.apk",
-        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/test-v1.8.13-25/lx-music-mobile-mobile-v1.8.13-universal.apk"
+        "name": "lx-music-mobile-mobile-v1.8.14-universal.apk",
+        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/test-v1.8.14-26/lx-music-mobile-mobile-v1.8.14-universal.apk"
       }
     ]
   }
