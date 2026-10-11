@@ -2,7 +2,8 @@
   "schemaVersion": 1,
   "stable": {
     "version": "1.8.7",
-    "desc": "正式版 v1.8.7",
+    "desc": "**Full Changelog**: https://github.com/Tingfe/lx-music-mobile/compare/test-v1.8.7-17...v1.8.7",
+    "releaseUrl": "https://github.com/Tingfe/lx-music-mobile/releases/tag/v1.8.7",
     "assets": [
       {
         "name": "lx-music-mobile-mobile-v1.8.7-universal.apk",
@@ -12,7 +13,8 @@
   },
   "preview": {
     "version": "1.9.2",
-    "desc": "测试版 v1.9.2",
+    "desc": "同步上游搜索、歌单、歌曲匹配和歌词修复，保留 Tingfe 同步扩展及 GD 可选接入。\n\n新增单曲播放地址缓存清理，兼容 GD 短期内存缓存；仅提供内置 JavaScript bundle 的 universal APK，无需 Metro。\n\n测试包请先备份歌单后覆盖安装；本轮服务端无需更新。GD 当前仍禁止下载，其他允许下载的音源不受影响。\n\n本版本为测试版，尚需手机/实车及各桌面系统验证。完整范围见仓库 docs/UPSTREAM_SYNC.md。\n",
+    "releaseUrl": "https://github.com/Tingfe/lx-music-mobile/releases/tag/test-v1.9.2-27",
     "assets": [
       {
         "name": "lx-music-mobile-mobile-v1.9.2-universal.apk",
