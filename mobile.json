@@ -14,11 +14,11 @@
   "preview": {
     "version": "1.9.3",
     "desc": "修复更新检查失败与 0.0.0 占位问题。三端统一公开更新清单、多地址兜底与完整内容校验，不再依赖客户端匿名 GitHub API。\n\n默认检查正式版；开启接收测试版后检测更新的预览版本。桌面测试版仍通过本仓库发布页手动下载安装。\n\n请先备份歌单后覆盖安装。本次不改同步协议和车机布局，服务端无需更新。旧客户端无法检测更新时，请从本 Release 手动下载安装修复版。\n\n详见仓库 docs/UPDATE_CHECK.md。真机网络与安装、播放表现仍需验证。\n",
-    "releaseUrl": "https://github.com/Tingfe/lx-music-mobile/releases/tag/test-v1.9.3-28",
+    "releaseUrl": "https://github.com/Tingfe/lx-music-mobile/releases/tag/test-v1.9.3-29",
     "assets": [
       {
         "name": "lx-music-mobile-mobile-v1.9.3-universal.apk",
-        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/test-v1.9.3-28/lx-music-mobile-mobile-v1.9.3-universal.apk"
+        "browser_download_url": "https://github.com/Tingfe/lx-music-mobile/releases/download/test-v1.9.3-29/lx-music-mobile-mobile-v1.9.3-universal.apk"
       }
     ]
   }
