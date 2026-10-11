@@ -14,6 +14,7 @@ import Button from '../../components/Button'
 import UserApiEditModal, { type UserApiEditModalType } from './UserApiEditModal'
 import Text from '@/components/common/Text'
 import { useTheme } from '@/store/theme/hook'
+import { GD_SOURCE_ID, GD_SOURCE_NAME } from '@/utils/musicSdk/gd-studio'
 // import { importUserApi, removeUserApi } from '@/core/userApi'
 
 const apiSourceList = apiSourceInfo.map(api => ({
@@ -98,6 +99,7 @@ export default memo(() => {
   return (
     <SubTitle title={t('setting_basic_source')}>
       <View style={styles.list}>
+        <Item name={GD_SOURCE_NAME} desc="仅限学习参考；禁止下载、传播或商用" id={GD_SOURCE_ID} change={setApiSourceId} />
         {
           list.map(({ id, name }) => <Item name={name} id={id} key={id} change={setApiSourceId} />)
         }

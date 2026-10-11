@@ -4,7 +4,7 @@
 
 - 下载测试包：[Releases](https://github.com/Tingfe/lx-music-mobile/releases)
 - 同步服务：[Tingfe/lx-music-sync-server](https://github.com/Tingfe/lx-music-sync-server)
-- 当前版本：`v1.8.13`
+- 当前版本：`v1.8.14`
 - 支持 Android 5 及以上；发布包仅提供一个 `universal.apk`。
 
 ## 本 Fork 的功能
@@ -43,6 +43,12 @@
 ## 隐私保护
 
 v1.8.13 清理认证与完整请求地址日志，加入日志脱敏、敏感文件忽略规则和发布前隐私回归检查。公网同步必须使用 HTTPS/WSS；已有旧日志不会自动清理。详情见：[隐私与安全说明](docs/PRIVACY_SECURITY.md)。
+
+## GD音乐台可选接入（v1.8.14 测试版）
+
+设置中的音源列表新增“GD音乐台（网易云·在线播放）”，需手动选择；支持 128k、320k 和无损请求，保留原有搜索、歌单、自定义音源与同步。当前 GD 官方禁止下载，因此仅用于在线播放；其他允许下载的音源不受影响。请从本仓库 Releases 安装 v1.8.14 或之后的测试包，旧发布包不会自动获得此功能。
+
+使用方式、音质边界、限流、升级和回归说明：[GD音乐台接入说明](docs/GD_STUDIO.md)。
 
 ## 上游项目与许可证
 

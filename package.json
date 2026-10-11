@@ -1,9 +1,10 @@
 {
   "name": "lx-music-mobile",
-  "version": "1.8.13",
-  "versionCode": 85,
+  "version": "1.8.14",
+  "versionCode": 86,
   "private": true,
   "scripts": {
+    "test:gd-studio": "node --test tests/gd-studio.test.cjs",
     "test:privacy": "node --test tests/privacy.test.cjs",
     "test:regression": "node --test tests/*.test.cjs",
     "dev": "react-native run-android --active-arch-only",

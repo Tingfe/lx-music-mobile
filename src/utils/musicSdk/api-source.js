@@ -14,9 +14,12 @@ import apiSourceInfo from './api-source-info'
 // import direct_api_mg from './mg/api-direct'
 
 import settingState from '@/store/setting/state'
+import { httpFetch } from '../request'
+import { createGdStudioApi, GD_SOURCE_ID, GD_QUALITYS } from './gd-studio'
 
 
 const apiList = {
+  gd_studio_api_wy: createGdStudioApi(httpFetch, () => settingState.setting['common.apiSource'] === GD_SOURCE_ID),
   // temp_api_kw,
   // // test_api_bd: require('./bd/api-test'),
   // test_api_kg,
@@ -33,7 +36,7 @@ const apiList = {
   // test_api_wy: require('./wy/api-test'),
   // test_api_xm: require('./xm/api-test'),
 }
-const supportQuality = {}
+const supportQuality = { [GD_SOURCE_ID]: { wy: GD_QUALITYS } }
 
 for (const api of apiSourceInfo) {
   supportQuality[api.id] = api.supportQualitys
